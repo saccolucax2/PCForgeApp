@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PcForgeAppApplication {
+public class PcForgeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PcForgeAppApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PcForgeApplication.class, args);
+    }
 
 }
