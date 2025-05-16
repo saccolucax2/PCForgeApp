@@ -27,6 +27,14 @@ public class AuthController {
         return exists ? "true" : "false";
     }
 
+    @GetMapping("/check-email")
+    @ResponseBody
+    public String checkEmail(@RequestParam String email) {
+        System.out.println("Controllo email: " + email);
+        boolean exists = userService.emailExists(email); // questo metodo va aggiunto nel servizio
+        return exists ? "true" : "false";
+    }
+
 
     @GetMapping("/login")
     public String login() {
@@ -48,7 +56,7 @@ public class AuthController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping({"/","/home"})
     public String home(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);

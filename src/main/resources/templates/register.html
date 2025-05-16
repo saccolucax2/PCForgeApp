@@ -24,6 +24,7 @@
     <div>
         <label for="email">Email:</label>
         <input type="email" id="email" th:field="*{email}" required>
+        <span id="email-status" class="status-message"></span>
     </div>
     <div>
         <label for="nome">Nome:</label>
@@ -41,19 +42,19 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const usernameInput = document.getElementById("username");
+        const emailInput = document.getElementById("email");
         const registerButton = document.querySelector("button[type='submit']");
-        const feedback = document.createElement("small");
-        usernameInput.parentElement.appendChild(feedback);
+        const usernameFeedback = document.getElementById("username-status");
+        const emailFeedback = document.getElementById("email-status");
 
-        // Disabilita subito il bottone finché non si verifica l'username
         registerButton.disabled = true;
 
         usernameInput.addEventListener("input", function () {
             const username = usernameInput.value.trim();
 
             if (username.length < 3) {
-                feedback.textContent = "";
-                registerButton.disabled = true; // blocca se username troppo corto
+                usernameFeedback.textContent = "";
+                registerButton.disabled = true;
                 return;
             }
 
@@ -61,20 +62,50 @@
                 .then(response => response.text())
                 .then(result => {
                     if (result === "true") {
-                        feedback.textContent = "⚠️ Username già in uso";
-                        feedback.style.color = "red";
-                        registerButton.disabled = true;  // blocca bottone
+                        usernameFeedback.textContent = "⚠️ Username già in uso";
+                        usernameFeedback.style.color = "red";
+                        registerButton.disabled = true;
                     } else {
-                        feedback.textContent = "✅ Username disponibile";
-                        feedback.style.color = "green";
-                        registerButton.disabled = false; // sblocca bottone
+                        usernameFeedback.textContent = "✅ Username disponibile";
+                        usernameFeedback.style.color = "green";
+                        registerButton.disabled = false;
                     }
                 })
                 .catch(error => {
-                    feedback.textContent = "Errore nel controllo username";
-                    feedback.style.color = "orange";
-                    registerButton.disabled = true;  // blocca bottone se errore
+                    usernameFeedback.textContent = "Errore nel controllo username";
+                    usernameFeedback.style.color = "orange";
+                    registerButton.disabled = true;
                     console.error("Errore AJAX:", error);
+                });
+        });
+
+        emailInput.addEventListener("input", function () {
+            const email = emailInput.value.trim();
+
+            if (email.length === 0) {
+                emailFeedback.textContent = "";
+                registerButton.disabled = true;
+                return;
+            }
+
+            fetch(`/check-email?email=${encodeURIComponent(email)}`)
+                .then(response => response.text())
+                .then(result => {
+                    if (result === "true") {
+                        emailFeedback.textContent = "⚠️ Email già registrata";
+                        emailFeedback.style.color = "red";
+                        registerButton.disabled = true;
+                    } else {
+                        emailFeedback.textContent = "✅ Email disponibile";
+                        emailFeedback.style.color = "green";
+                        registerButton.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    emailFeedback.textContent = "Errore nel controllo email";
+                    emailFeedback.style.color = "orange";
+                    registerButton.disabled = true;
+                    console.error("Errore AJAX email:", error);
                 });
         });
     });

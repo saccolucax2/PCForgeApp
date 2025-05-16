@@ -5,18 +5,93 @@
     <title>Home</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            position: relative;
+            min-height: 100vh;
+            background-image: url('https://www.transparenttextures.com/patterns/circles.png'),
+            linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h2 {
+            position: absolute;
+            top: 20px;
+            text-align: center;
+            color: #00d9ff;
+            font-size: 24px;
+        }
+
+        form {
+            background-color: rgba(0, 0, 0, 0.75);
+            padding: 25px 25px 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        form p {
+            margin: 8px 0;
+            color: #ffffff;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s background;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #0072ff, #00c6ff);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: #cccccc;
+        }
+    </style>
 </head>
 <body>
 <h2>Benvenuto nella tua Home Page</h2>
-<div th:if="${user != null}">
-    <p>Username: <span th:text="${user.username}"></span></p>
-    <p>Nome: <span th:text="${user.nome}"></span></p>
-    <p>Cognome: <span th:text="${user.cognome}"></span></p>
-    <p>Email: <span th:text="${user.email}"></span></p>
-    <p>Data registrazione: <span th:text="${#temporals.format(user.dataRegistrazione, 'dd/MM/yyyy HH:mm')}"></span></p>
-</div>
+
 <form th:action="@{/logout}" method="post">
+    <div th:if="${user != null}">
+        <p>Username: <span th:text="${user.username}"></span></p>
+        <p>Nome: <span th:text="${user.nome}"></span></p>
+        <p>Cognome: <span th:text="${user.cognome}"></span></p>
+        <p>Email: <span th:text="${user.email}"></span></p>
+        <p>Data registrazione: <span th:text="${#temporals.format(user.dataRegistrazione, 'dd/MM/yyyy HH:mm')}"></span></p>
+    </div>
+
     <button type="submit">Logout</button>
 </form>
+
+<footer>
+    <p>PCForge &copy; 2025</p>
+</footer>
 </body>
 </html>
