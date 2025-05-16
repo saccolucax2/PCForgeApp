@@ -4,14 +4,17 @@
     <title>Registrazione</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 <body>
 
-<h2>Registrazione</h2>
+<h2 >PCForge Registrazione</h2>
 <form th:action="@{/register}" th:object="${user}" method="post">
     <div>
         <label for="username">Username:</label>
         <input type="text" id="username" th:field="*{username}" required>
+        <span id="username-status" class="status-message"></span>
     </div>
 
     <div>
@@ -35,7 +38,47 @@
 </form>
 <p>Hai già un account? <a th:href="@{/login}">Accedi</a></p>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const usernameInput = document.getElementById("username");
+        const registerButton = document.querySelector("button[type='submit']");
+        const feedback = document.createElement("small");
+        usernameInput.parentElement.appendChild(feedback);
 
+        // Disabilita subito il bottone finché non si verifica l'username
+        registerButton.disabled = true;
+
+        usernameInput.addEventListener("input", function () {
+            const username = usernameInput.value.trim();
+
+            if (username.length < 3) {
+                feedback.textContent = "";
+                registerButton.disabled = true; // blocca se username troppo corto
+                return;
+            }
+
+            fetch(`/check-username?username=${encodeURIComponent(username)}`)
+                .then(response => response.text())
+                .then(result => {
+                    if (result === "true") {
+                        feedback.textContent = "⚠️ Username già in uso";
+                        feedback.style.color = "red";
+                        registerButton.disabled = true;  // blocca bottone
+                    } else {
+                        feedback.textContent = "✅ Username disponibile";
+                        feedback.style.color = "green";
+                        registerButton.disabled = false; // sblocca bottone
+                    }
+                })
+                .catch(error => {
+                    feedback.textContent = "Errore nel controllo username";
+                    feedback.style.color = "orange";
+                    registerButton.disabled = true;  // blocca bottone se errore
+                    console.error("Errore AJAX:", error);
+                });
+        });
+    });
+</script>
 
 </body>
 </html>

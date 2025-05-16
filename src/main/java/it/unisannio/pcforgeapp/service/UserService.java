@@ -39,4 +39,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
     }
+
+    public boolean usernameExists(String username) {
+        System.out.println("Controllo nel DB per username: " + username);
+        return userRepository.findByUsername(username).isPresent();
+    }
+
 }

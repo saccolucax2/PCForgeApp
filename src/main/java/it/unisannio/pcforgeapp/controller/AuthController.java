@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -19,6 +17,16 @@ import org.springframework.security.core.Authentication;
 public class AuthController {
 
     private final UserService userService;
+
+    @GetMapping("/check-username")
+    @ResponseBody
+    public String checkUsername(@RequestParam String username) {
+        System.out.println("Ricevuto username da controllare: " + username);
+        boolean exists = userService.usernameExists(username);
+        System.out.println("Esiste? " + exists);
+        return exists ? "true" : "false";
+    }
+
 
     @GetMapping("/login")
     public String login() {
