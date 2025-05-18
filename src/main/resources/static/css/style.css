@@ -9,9 +9,11 @@
 body {
     position: relative;
     min-height: 100vh;
-    background-image: url('https://www.transparenttextures.com/patterns/circles.png'),
+    background-image: url('https://i.pinimg.com/736x/9e/40/85/9e408593e38d0e102638b792be196e2b.jpg'),
     linear-gradient(to right, #0f2027, #203a43, #2c5364);
     background-size: cover;
+    background-color: rgba(0, 0, 0, 0.02);
+    background-blend-mode: multiply;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +35,7 @@ h2 {
     top: 20px;
     display: flex;
     text-align: center;
-    color: #00d9ff;
+    color: #ffffff;
     margin-bottom: 25px;
     font-size: 24px;
 }
@@ -96,7 +98,7 @@ p {
 }
 
 a {
-    color: #00d9ff;
+    color: #0077ff;
     text-decoration: none;
 }
 

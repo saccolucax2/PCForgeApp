@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <title>Home</title>
     <meta charset="UTF-8">
@@ -10,25 +9,43 @@
             margin: 0;
             position: relative;
             min-height: 100vh;
-            background-image: url('https://www.transparenttextures.com/patterns/circles.png'),
+            background-image: url('https://i.pinimg.com/736x/9e/40/85/9e408593e38d0e102638b792be196e2b.jpg'),
             linear-gradient(to right, #0f2027, #203a43, #2c5364);
             background-size: cover;
+            background-color: rgba(0, 0, 0, 0.02);
+            background-blend-mode: multiply;
             display: flex;
+            flex-direction: column;  /* Aggiunto */
             justify-content: center;
             align-items: center;
             padding: 20px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        h1 {
+            color: white;
+            font-size: 48px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 150px;  /* Modificato */
+            width: 100%;
+            z-index: 1;
+        }
+
         h2 {
             position: absolute;
-            top: 20px;
+            top: 250px;  /* Modificato */
             text-align: center;
-            color: #00d9ff;
+            color: #ffffff;
             font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            width: 100%;  /* Aggiunto */
         }
 
         form {
+            margin-top: 180px;  /* Aggiunto */
             background-color: rgba(0, 0, 0, 0.75);
             padding: 25px 25px 30px;
             border-radius: 16px;
@@ -73,11 +90,12 @@
             text-align: center;
             color: #cccccc;
         }
+
     </style>
 </head>
 <body>
+<h1>PCForge</h1>
 <h2>Benvenuto nella tua Home Page</h2>
-
 <form th:action="@{/logout}" method="post">
     <div th:if="${user != null}">
         <p>Username: <span th:text="${user.username}"></span></p>
@@ -86,10 +104,8 @@
         <p>Email: <span th:text="${user.email}"></span></p>
         <p>Data registrazione: <span th:text="${#temporals.format(user.dataRegistrazione, 'dd/MM/yyyy HH:mm')}"></span></p>
     </div>
-
     <button type="submit">Logout</button>
 </form>
-
 <footer>
     <p>PCForge &copy; 2025</p>
 </footer>
