@@ -88,25 +88,49 @@
         button[type="submit"] {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            background: linear-gradient(90deg, #00c6ff, #0072ff, #00c6ff);
+            background-size: 200% 100%;
             border: none;
             color: white;
             font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
-            transition: 0.3s background;
+            transition: all 0.5s ease;
+            animation: gradientMove 3s ease infinite;
         }
 
         button:hover {
-            background: linear-gradient(90deg, #0072ff, #00c6ff);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0 50%;
+            }
         }
 
         p.bottom-text {
             position: absolute;
             bottom: -55px;
-            color: #cccccc;
+            color: #ffffff;
             text-align: center;
+        }
+
+        a {
+            color: #0077ff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
 
         h1 {
