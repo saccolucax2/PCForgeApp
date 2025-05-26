@@ -2,15 +2,7 @@ package it.unisannio.authorization.presentation;
 
 import it.unisannio.authorization.application.UserService;
 import it.unisannio.authorization.data.User;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -32,17 +24,18 @@ public class UserController {
 
 
     // Endpoint per autenticazione (accessibile senza token)
-    @GET
+    @POST
     @Path("/authenticate")
-    public Response authenticateUser(@QueryParam("username") String username, @QueryParam("password") String password) {
-        boolean authenticated = userService.authenticateUser(username, password);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response authenticateUserJson(User user) {
+        boolean authenticated = userService.authenticateUser(user.getUsername(), user.getPassword());
         if (authenticated) {
-
-            return Response.ok().build();
+            return Response.ok().build(); // oppure puoi restituire un token
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
+
 
 
     // Endpoint per creare un nuovo utente (puoi decidere se renderlo pubblico o protetto)
