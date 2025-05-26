@@ -29,32 +29,30 @@
         /* Container del form */
         form {
             background-color: rgba(0, 0, 0, 0.75);
-            padding: 30px 25px;
+            padding: 20px 30px;
             border-radius: 16px;
             width: 100%;
-            max-width: 420px;
+            max-width: 480px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         h2 {
-            position: absolute;
-            top: 40px;
-            display: flex;
+            width: 100%;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             color: #ffffff;
-            margin-bottom: 50px;
-            font-size: 24px;
+            margin-bottom: 20px;
+            font-size: 30px;
         }
 
         /* Stile campi */
         form div {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         label {
             display: flex;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             color: #eeeeee;
             font-weight: bold;
         }
@@ -63,12 +61,13 @@
         input[type="password"],
         input[type="email"] {
             width: 100%;
-            padding: 10px;
+            padding: 8px 12px;
             background-color: #1c1c1c;
             border: 1px solid #555;
             color: #fff;
             border-radius: 8px;
             transition: 0.3s border;
+            font-size: 14px;
         }
 
         input:focus {
@@ -90,6 +89,7 @@
             font-size: 16px;
             transition: all 0.5s ease;
             animation: gradientMove 3s ease infinite;
+            margin-top: 10px;
         }
 
         button:hover {
@@ -98,15 +98,9 @@
         }
 
         @keyframes gradientMove {
-            0% {
-                background-position: 0 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0 50%;
-            }
+            0% { background-position: 0 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0 50%; }
         }
 
         /* Link */
@@ -115,6 +109,8 @@
             bottom: 50px;
             color: #ffffff;
             text-align: center;
+            width: 100%;
+            left: 0;
         }
 
         a {
@@ -124,6 +120,12 @@
 
         a:hover {
             text-decoration: underline;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -154,46 +156,8 @@
             <button type="submit">Registrati</button>
         </form>
         <div class="login-link">
-            Hai già un account? <a href="login.html">Accedi qui</a>
+            <p class="bottom-text">Hai già un account? <a href="login.html">Accedi qui</a></p>
         </div>
     </div>
-    <script>
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const userData = {
-                username: document.getElementById('username').value,
-                name: document.getElementById('name').value,
-                surname: document.getElementById('surname').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value
-            };
-
-            fetch('/login/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            })
-                .then(response => {
-                    if (response.status === 201) {
-                        alert('Registrazione completata con successo!');
-                        window.location.href = 'login.html';
-                    } else if (response.status === 400) {
-                        alert('Errore nella registrazione: dati non validi');
-                    } else if (response.status === 409) {
-                        alert('Username già esistente. Scegline un altro.');
-                    } else {
-                        alert('Errore durante la registrazione');
-                    }
-                })
-                .catch(error => {
-                    console.error('Errore:', error);
-                    alert('Errore durante la registrazione');
-                });
-        });
-    </script>
-
 </body>
 </html>
