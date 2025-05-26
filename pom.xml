@@ -29,11 +29,7 @@
 			<version>6.1.2</version> <!-- Assicurati che sia compatibile con la tua versione di Spring -->
 		</dependency>
 
-		<dependency>
-			<groupId>com.webauthn4j</groupId>
-			<artifactId>webauthn4j-spring-security-core</artifactId>
-			<version>0.11.2.RELEASE</version>
-		</dependency>
+
 
 		<!-- MongoDB -->
 		<dependency>
@@ -67,6 +63,9 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+
+
 	</dependencies>
 
 	<build>

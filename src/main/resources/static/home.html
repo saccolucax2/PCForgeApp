@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Home - PCForge</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            margin: 0;
+            position: relative;
+            min-height: 100vh;
+            background-image: url('https://i.pinimg.com/736x/9e/40/85/9e408593e38d0e102638b792be196e2b.jpg'),
+            linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 0.02);
+            background-blend-mode: multiply;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            padding: 20px;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+
+        p.welcome-text {
+            font-size: 20px;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        button {
+            background: linear-gradient(90deg, #00c6ff, #0072ff, #00c6ff);
+            background-size: 200% 100%;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 15px 40px;
+            margin: 10px;
+            transition: all 0.5s ease;
+            animation: gradientMove 3s ease infinite;
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.6);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.8);
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0 50%; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Benvenuto su PCForge</h1>
+<p class="welcome-text">Hai effettuato l'accesso con successo.</p>
+
+<div>
+    <button id="btnProfile" onclick="goToProfile()">Profilo</button>
+    <button id="btnLogout" onclick="logout()">Logout</button>
+</div>
+
+<script>
+    function goToProfile() {
+        // Naviga alla pagina profilo (aggiusta il percorso se serve)
+        window.location.href = '/profile.html';
+    }
+
+    function logout() {
+        // Esempio semplice: pulisci sessione e torna al login
+        // Qui potresti chiamare il logout API se presente
+        window.location.href = '/login.html';
+    }
+</script>
+
+</body>

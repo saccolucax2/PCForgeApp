@@ -23,6 +23,7 @@ public class UserController {
     private UserService userService;
 
 
+
     // Endpoint per autenticazione (accessibile senza token)
     @POST
     @Path("/authenticate")
@@ -89,5 +90,6 @@ public class UserController {
             return Response.serverError().build();
         }
     }
+
 }
 
