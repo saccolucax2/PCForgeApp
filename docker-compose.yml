@@ -1,26 +1,36 @@
+version: '3'
+
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth-service
     ports:
-      - "8082:8082"
+      - "8081:8081"
+    environment:
+      - MONGO_ADDRESS=mongodb
+      - MONGO_PORT=27017
     depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/userdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      - mongodb
+    networks:
+      - auth-network
 
-  postgres:
-    image: postgres:17
-    container_name: postgres_db
-    environment:
-      POSTGRES_DB: userdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongodb_data:/data/db
+    networks:
+      - auth-network
 
 volumes:
-  postgres_data:
+  mongodb_data:
+    driver: local
+
+networks:
+  auth-network:
+    driver: bridge
