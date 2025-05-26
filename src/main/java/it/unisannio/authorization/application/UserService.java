@@ -12,13 +12,12 @@ import java.util.List;
 public class UserService {
 
 
-    private UserRepository userRepository = UserRepositoryMongo.getInstance();
+    private final UserRepository userRepository = UserRepositoryMongo.getInstance();
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public String createUser(User user) {
             user.setPassword(encoder.encode(user.getPassword()));
-            String username = userRepository.createUser(user).getUsername();
-            return username;
+        return userRepository.createUser(user).getUsername();
 
     }
 
@@ -27,16 +26,14 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        User u = userRepository.findUser(username);
-        return u;
+        return userRepository.findUser(username);
     }
 
     public User updateUser(String username, User user) {
         if(user.getPassword()!=null && !user.getPassword().isEmpty()) {
             user.setPassword(encoder.encode(user.getPassword()));
         }
-        User u = userRepository.updateUser(username,user);
-        return u;
+        return userRepository.updateUser(username,user);
     }
 
     public boolean deleteUser(String username) {

@@ -1,15 +1,11 @@
 package it.unisannio.authorization.data;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-
 public class User {
 
-    private String username;
-    private String name;
-    private String surname;
-    private String email;
+    private final String username;
+    private final String name;
+    private final String surname;
+    private final String email;
     private String password;
 
     public User(String username, String name, String surname, String email, String password) {
@@ -22,10 +18,6 @@ public class User {
 
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getName() {
@@ -44,10 +36,6 @@ public class User {
         return password;
     }
 
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
     public void setPassword(String password) {
         this.password = password;
     }
