@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Diretta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+        .chat-header {
+            padding: 15px;
+            background-color: #2196f3;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+        }
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 2px 0;
+            word-wrap: break-word;
+        }
+        .sent {
+            background-color: #e3f2fd;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        .received {
+            background-color: #f5f5f5;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        .input-area {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        #messageInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1976d2;
+        }
+        .timestamp {
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginSection" style="text-align: center; margin: 20px;">
+        <input type="text" id="userIdInput" placeholder="Inserisci il tuo userId">
+        <button onclick="startChat()">Inizia Chat</button>
+    </div>
+
+    <div class="chat-container" id="chatContainer" style="display: none;">
+        <div class="chat-header">
+            <h2>Chat con <span id="chatPartner"></span></h2>
+        </div>
+        <div class="messages" id="messagesArea">
+        </div>
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="Scrivi un messaggio...">
+            <button onclick="sendMessage()">Invia</button>
+        </div>
+    </div>
+
+    <script>
+        let currentUser;
+        let targetUser;
+
+        function startChat() {
+            currentUser = document.getElementById('userIdInput').value.trim();
+            if (!currentUser) {
+                alert('Inserisci un userId valido');
+                return;
+            }
+
+            // Determina l'altro utente
+            targetUser = currentUser === 'sim01' ? 'capo' : 'sim01';
+            
+            // Nascondi la sezione di login e mostra la chat
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('chatContainer').style.display = 'block';
+            document.getElementById('chatPartner').textContent = targetUser;
+
+            // Inizia il polling dei messaggi
+            startPollingMessages();
+        }
+
+        // Funzione per il polling dei messaggi
+        function startPollingMessages() {
+            setInterval(checkNewMessages, 2000); // Controlla ogni 2 secondi
+        }
+
+        // Funzione per controllare i nuovi messaggi
+        async function checkNewMessages() {
+            try {
+                const response = await fetch(`http://localhost:8084/chat/rest/inbox/${currentUser}`);
+                if (response.ok) {
+                    const messages = await response.json();
+                    messages.forEach(msg => {
+                        if (msg.fromUserId === targetUser) {
+                            addMessageToChat(msg, false);
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Errore nel controllo dei nuovi messaggi:', error);
+            }
+        }
+
+        async function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const content = messageInput.value.trim();
+
+            if (!content) {
+                return;
+            }
+
+            const message = {
+                fromUserId: currentUser,
+                toUserId: targetUser,
+                content: content
+            };
+
+            try {
+                const response = await fetch('http://localhost:8084/chat/rest/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(message)
+                });
+
+                if (response.ok) {
+                    addMessageToChat(message, true);
+                    messageInput.value = '';
+                } else {
+                    throw new Error('Errore nell\'invio del messaggio');
+                }
+            } catch (error) {
+                alert('Errore nell\'invio del messaggio: ' + error.message);
+            }
+        }
+
+        function addMessageToChat(message, sent = false) {
+            const messagesArea = document.getElementById('messagesArea');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sent ? 'sent' : 'received'}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.textContent = message.content;
+            
+            const timestamp = document.createElement('div');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = new Date().toLocaleTimeString();
+            
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(timestamp);
+            
+            messagesArea.appendChild(messageDiv);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        document.getElementById('messageInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
